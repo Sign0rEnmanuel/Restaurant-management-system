@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import authRoutes from './routes/authRoutes.js';
+import menuRoutes from './routes/menuRoutes.js';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/menu', menuRoutes);
 
 app.listen(PORT, () => {
     console.log(colors.green("======================================================================"));

@@ -37,9 +37,9 @@ export const getMenuById = async (req, res) => {
 
 export const addMenuItem = async (req, res) => {
     try {
-        const { name, description, price, category, avaliable, image } = req.body;
+        const { name, description, price, category, available } = req.body;
 
-        if (!name || !description || !price || !category || !avaliable || !image) {
+        if (!name || !description || !price || !category || !available) {
             return res
                 .status(400)
                 .json({ message: 'Missing required fields' });
@@ -57,10 +57,10 @@ export const addMenuItem = async (req, res) => {
             id: menu.length + 1,
             name,
             description,
-            price,
+            price: parseFloat(price),
             category,
-            avaliable,
-            image
+            available,
+            createdAt: new Date().toISOString(),
         };
 
         menu.push(newMenuItem);
@@ -80,7 +80,7 @@ export const addMenuItem = async (req, res) => {
 export const updateMenuItem = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, description, price, category, available, image } = req.body;
+        const { name, description, price, category, available } = req.body;
         
         const menu = await readJSON('menu.json');
         const itemIndex = menu.findIndex(item => item.id === parseInt(id));
@@ -94,7 +94,6 @@ export const updateMenuItem = async (req, res) => {
         if (price) menu[itemIndex].price = price;
         if (category) menu[itemIndex].category = category;
         if (available) menu[itemIndex].available = available;
-        if (image) menu[itemIndex].image = image;
 
         await writeJSON('menu.json', menu);
 
