@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import colors from 'colors';
+import authRoutes from './routes/authRoutes.js';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.json({message: 'Api server is running'});
 });
+
+app.use('/api/auth', authRoutes);
 
 app.listen(PORT, () => {
     console.log(colors.green("======================================================================"));
