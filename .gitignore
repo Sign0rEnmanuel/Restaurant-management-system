@@ -4,3 +4,8 @@ node_modules
 # backend
 backend/package-lock.json
 backend/.env
+backend/src/utils/createAdmin.js
+backend/src/database/users.json
+backend/src/database/tables.json
+backend/src/database/orders.json
+backend/src/database/menu.json

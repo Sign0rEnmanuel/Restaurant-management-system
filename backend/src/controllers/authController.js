@@ -11,14 +11,14 @@ export const register = async (req, res) => {
                 .status(400)
                 .json({ message: 'Missing required fields' });
         }
-        if (role !== 'admin' && role !== 'user') {
+        if (role !== 'admin' && role !== 'operador') {
             return res
                 .status(400)
                 .json({ message: 'Invalid role' });
         }
 
-        const users = readJSON('users.json');
-        const userExists = users.users.find(user => user.username === username);
+        const users = await readJSON('users.json');
+        const userExists = users.find(user => user.username === username);
         if (userExists) {
             return res
                 .status(400)
@@ -27,19 +27,22 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = {
-            id: users.users.length + 1,
+            id: users.length + 1,
             username,
             password: hashedPassword,
             role,
             createdAt: new Date().toISOString(),
         };
 
-        users.users.push(newUser);
-        writeJSON('users.json', users);
+        users.push(newUser);
+        await writeJSON('users.json', users);
 
         res
             .status(201)
-            .json({ message: 'User created successfully', user: newUser });
+            .json({ 
+                message: 'User created successfully', 
+                user: { id: newUser.id, username: newUser.username, role: newUser.role }
+            });
     } catch (error) {
         console.log(error);
         res
@@ -58,8 +61,8 @@ export const login = async (req, res) => {
                 .json({ message: 'Missing required fields' });
         }
 
-        const users = readJSON('users.json');
-        const user = users.users.find(user => user.username === username);
+        const users = await readJSON('users.json');
+        const user = users.find(user => user.username === username);
         if (!user) {
             return res
                 .status(401)
@@ -77,7 +80,7 @@ export const login = async (req, res) => {
             { id: user.id, username: user.username, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '8h' }
-        )
+        );
 
         res
             .status(200)
@@ -85,7 +88,7 @@ export const login = async (req, res) => {
                 message: 'Login successful',
                 token: `Bearer ${token}`,
                 user: { id: user.id, username: user.username, role: user.role },
-            })
+            });
 
     } catch (error) {
         console.log(error);
