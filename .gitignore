@@ -1,11 +1,22 @@
-# node_modules
-node_modules
+# Node modules
+node_modules/
 
-# backend
-backend/package-lock.json
-backend/.env
+# .env file
+.env
+
+# Package lock file
+package-lock.json
+
+# Database files
+backend/src/database/
+
+# Vulnerability scripts
 backend/src/utils/createAdmin.js
-backend/src/database/users.json
-backend/src/database/tables.json
-backend/src/database/orders.json
-backend/src/database/menu.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# System files
+.DS_Store
+Thumbs.db
