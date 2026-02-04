@@ -1,15 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login.jsx';
 
 function App() {
   return (
     <Router>
-      <div className="app">
-        <h1>Restaurant Management System</h1>
-        <Routes>
-          <Route path="/" element={<h2>Home Page</h2>} />
-          <Route path="/login" element={<h2>Login Page</h2>} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+      </Routes>
     </Router>
   );
 }
