@@ -66,6 +66,11 @@ export const updateTableStatus = async (id, status) => {
     return response.data;
 };
 
+export const deleteTable = async (id) => {
+    const response = await api.delete(`/tables/${id}`);
+    return response.data;
+};
+
 export const getOrders = async () => {
     const response = await api.get('/orders');
     return response.data;
