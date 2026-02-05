@@ -105,6 +105,40 @@ export const updateTable = async (req, res) => {
     }
 };
 
+export const updateTableStatus = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!status || (status !== 'available' && status !== 'occupied')) {
+            return res
+                .status(400)
+                .json({ message: 'Invalid status value' });
+        }
+
+        const tables = await readJSON('tables.json');
+        const itemIndex = tables.findIndex(item => item.id === parseInt(id));
+
+        if (itemIndex === -1) {
+            return res.status(404).json({ message: 'Item not found' });
+        }
+
+        tables[itemIndex].status = status;
+        tables[itemIndex].updateAt = new Date().toISOString();
+
+        await writeJSON('tables.json', tables);
+
+        res
+            .status(200)
+            .json({ message: 'Table status updated successfully', table: tables[itemIndex] });
+    } catch (error) {
+        console.log(error);
+        res
+            .status(500)
+            .json({ message: 'Internal server error' });
+    };
+};
+
 export const deleteTable = async (req, res) => {
     try {
         const { id } = req.params;
@@ -113,6 +147,12 @@ export const deleteTable = async (req, res) => {
         
         if (itemIndex === -1) {
             return res.status(404).json({ message: 'Item not found' });
+        }
+
+        if (tables[itemIndex].status === 'occupied') {
+            return res
+                .status(400)
+                .json({ message: 'Cannot delete an occupied table' });
         }
 
         tables.splice(itemIndex, 1);

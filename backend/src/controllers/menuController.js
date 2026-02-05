@@ -39,7 +39,7 @@ export const addMenuItem = async (req, res) => {
     try {
         const { name, description, price, category, available } = req.body;
 
-        if (!name || !description || !price || !category || !available) {
+        if (!name || !description || !price || !category || available === undefined) {
             return res
                 .status(400)
                 .json({ message: 'Missing required fields' });
@@ -93,7 +93,7 @@ export const updateMenuItem = async (req, res) => {
         if (description) menu[itemIndex].description = description;
         if (price) menu[itemIndex].price = price;
         if (category) menu[itemIndex].category = category;
-        if (available) menu[itemIndex].available = available;
+        if (available !== undefined) menu[itemIndex].available = available;
 
         await writeJSON('menu.json', menu);
 
