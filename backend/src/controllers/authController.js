@@ -11,7 +11,7 @@ export const register = async (req, res) => {
                 .status(400)
                 .json({ message: 'Missing required fields' });
         }
-        if (role !== 'admin' && role !== 'operador') {
+        if (role !== 'admin' && role !== 'operator') {
             return res
                 .status(400)
                 .json({ message: 'Invalid role' });

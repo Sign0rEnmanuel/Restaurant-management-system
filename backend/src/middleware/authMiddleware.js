@@ -35,7 +35,7 @@ export const isAdmin = (req, res, next) => {
 };
 
 export const isAdminOrOperator = (req, res, next) => {
-    if (req.user.role !== 'admin' && req.user.role !== 'operador') {
+    if (req.user.role !== 'admin' && req.user.role !== 'operator') {
         return res
             .status(401)
             .json({ message: 'Unauthorized' });

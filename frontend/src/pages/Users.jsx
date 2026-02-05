@@ -11,7 +11,7 @@ function Users() {
     const [formData, setFormData] = useState({
         username: "",
         password: "",
-        role: "operador",
+        role: "operator",
     });
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -68,7 +68,7 @@ function Users() {
         setFormData({
             username: "",
             password: "",
-            role: "operador",
+            role: "operator",
         });
         setError("");
     };
@@ -187,7 +187,7 @@ function Users() {
                                             setFormData({ ...formData, role: e.target.value })
                                         }
                                     >
-                                        <option value="operador">Operator</option>
+                                        <option value="operator">Operator</option>
                                         <option value="admin">Admin</option>
                                     </select>
                                 </div>

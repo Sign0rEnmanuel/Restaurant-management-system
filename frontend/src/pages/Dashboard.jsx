@@ -34,16 +34,16 @@ function Dashboard() {
                     <div className="dashboard-card">
                         <h3>Orders</h3>
                         <p>View and manage your orders.</p>
-                        <span>Permission: Succes!</span>
+                        <span>Permission: Success!</span>
                     </div>
 
                     {user?.role === "admin" && (
                         <div className="dashboard-card">
                             <h3>Users</h3>
                             <p>View and manage your users.</p>
-                            <span>Permission: Succes!</span>
+                            <span>Permission: Success!</span>
                         </div>
-                    )};
+                    )}
                 </div>
 
                 <div className="quick-stats">
@@ -59,7 +59,7 @@ function Dashboard() {
                         </div>
                         {user?.role === "admin" && (
                             <div className="stat-card">
-                                <h4>Add a Item</h4>
+                                <h4>Add Item</h4>
                                 <p>Add an item to an order</p>
                             </div>
                         )}

@@ -124,7 +124,7 @@ export const updateTableStatus = async (req, res) => {
         }
 
         tables[itemIndex].status = status;
-        tables[itemIndex].updateAt = new Date().toISOString();
+        tables[itemIndex].updatedAt = new Date().toISOString();
 
         await writeJSON('tables.json', tables);
 
@@ -136,7 +136,7 @@ export const updateTableStatus = async (req, res) => {
         res
             .status(500)
             .json({ message: 'Internal server error' });
-    };
+    }
 };
 
 export const deleteTable = async (req, res) => {

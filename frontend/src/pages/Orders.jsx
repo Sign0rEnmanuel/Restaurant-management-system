@@ -262,7 +262,7 @@ function Orders() {
                 </div>
             </div>
 
-            {/* Modal para crear orden */}
+            {/* Modal to create order */}
             {showCreateOrderModal && (
                 <div className='modal-overlay' onClick={closeCreateOrderModal}>
                     <div className='modal-content' onClick={(e) => e.stopPropagation()}>
@@ -303,7 +303,7 @@ function Orders() {
                 </div>
             )}
 
-            {/* Modal para ver y editar items */}
+            {/* Modal to view and edit items */}
             {showItemsModal && selectedOrder && (
                 <div className='modal-overlay' onClick={closeItemsModal}>
                     <div className='modal-content modal-large' onClick={(e) => e.stopPropagation()}>
@@ -388,7 +388,7 @@ function Orders() {
                 </div>
             )}
 
-            {/* Modal para agregar item */}
+            {/* Modal to add item */}
             {showAddItemModal && selectedOrder && (
                 <div className='modal-overlay' onClick={closeAddItemModal}>
                     <div className='modal-content' onClick={(e) => e.stopPropagation()}>
