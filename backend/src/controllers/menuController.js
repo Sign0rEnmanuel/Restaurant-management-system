@@ -5,7 +5,7 @@ export const getMenu = async (req, res) => {
         const menu = await readJSON('menu.json');
         res
             .status(200)
-            .json(menu);
+            .json({ menu });
     } catch (error) {
         console.log(error);
         res
@@ -26,7 +26,7 @@ export const getMenuById = async (req, res) => {
         }
         res
             .status(200)
-            .json(menuItem);
+            .json({ menuItem });
     } catch (error) {
         console.log(error);
         res

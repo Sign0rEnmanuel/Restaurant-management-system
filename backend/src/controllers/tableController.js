@@ -5,7 +5,7 @@ export const getTables = async (req, res) => {
         const tables = await readJSON('tables.json');
         res
             .status(200)
-            .json(tables);
+            .json({ tables });
     } catch (error) {
         console.log(error);
         res
@@ -26,7 +26,7 @@ export const getTableById = async (req, res) => {
         }
         res
             .status(200)
-            .json(table);
+            .json({ table });
     } catch (error) {
         console.log(error);
         res

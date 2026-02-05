@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         return user?.role === "admin";
     }
     const isOperator = () => {
-        return user?.role === "operator";
+        return user?.role === "operador";
     }
 
     return (

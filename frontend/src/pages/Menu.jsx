@@ -25,7 +25,13 @@ function Menu() {
     const loadMenu = async () => {
         try {
             const data = await getMenu();
-            setMenu(data);
+            if (data && data.menu) {
+                setMenu(data.menu);
+            } else if (Array.isArray(data)) {
+                setMenu(data);
+            } else {
+                setMenu([]);
+            }
             setLoading(false);
         } catch (error) {
             console.error('Error loading menu:', error);
