@@ -25,13 +25,18 @@ function Menu() {
     const loadMenu = async () => {
         try {
             const data = await getMenu();
+            let menuItems = [];
             if (data && data.menu) {
-                setMenu(data.menu);
+                menuItems = data.menu;
             } else if (Array.isArray(data)) {
-                setMenu(data);
-            } else {
-                setMenu([]);
+                menuItems = data;
             }
+            
+            const normalizedMenu = menuItems.map(item => ({
+                ...item,
+                price: parseFloat(item.price)
+            }));
+            setMenu(normalizedMenu);
             setLoading(false);
         } catch (error) {
             console.error('Error loading menu:', error);

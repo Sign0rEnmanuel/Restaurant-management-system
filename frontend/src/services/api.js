@@ -100,7 +100,5 @@ export const closeOrder = async (orderId) => {
     const response = await api.put(`/orders/${orderId}/close`);
     return response.data;
 };
-    return response.data;
-};
 
 export default api;
