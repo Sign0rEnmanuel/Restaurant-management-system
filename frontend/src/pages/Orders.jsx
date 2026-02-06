@@ -119,12 +119,21 @@ function Orders() {
         }
 
         try {
-            await addItemToOrder(selectedOrder.id, formData.menuItemId, formData.quantity);
-            await loadOrders();
+            const data = await addItemToOrder(selectedOrder.id, formData.menuItemId, formData.quantity);
+            const updatedOrder = data.order || data;
+
+            // Update orders state replacing the updated order
+            setOrders((prev) => {
+                const exists = prev.some(o => o.id === updatedOrder.id);
+                if (exists) {
+                    return prev.map(o => o.id === updatedOrder.id ? updatedOrder : o);
+                }
+                return [...prev, updatedOrder];
+            });
+
+            setSelectedOrder(updatedOrder);
             closeAddItemModal();
             alert('Item added to order successfully');
-            const updatedOrder = orders.find(o => o.id === selectedOrder.id);
-            if (updatedOrder) setSelectedOrder(updatedOrder);
         } catch (error) {
             console.error('Error adding item to order:', error);
             alert(error.response?.data?.message || 'Error adding the item to the order');
@@ -137,12 +146,11 @@ function Orders() {
         }
 
         try {
-            await removeItemFromOrder(selectedOrder.id, menuItemId);
-            await loadOrders();
-            const updatedOrder = orders.find(o => o.id === selectedOrder.id);
-            if (updatedOrder) {
-                setSelectedOrder(updatedOrder);
-            }
+            const data = await removeItemFromOrder(selectedOrder.id, menuItemId);
+            const updatedOrder = data.order || data;
+
+            setOrders((prev) => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
+            setSelectedOrder(updatedOrder);
             alert('Item removed from order successfully');
         } catch (error) {
             console.error('Error removing item from order:', error);
@@ -156,10 +164,13 @@ function Orders() {
         }
 
         try {
-            await closeOrder(orderId);
-            await loadOrders();
+            const data = await closeOrder(orderId);
+            const updatedOrder = data.order || data;
+
+            setOrders((prev) => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
             await loadTables();
             if (selectedOrder && selectedOrder.id === orderId) {
+                // ensure modal is closed after update
                 closeItemsModal();
             }
             alert('Order closed successfully');
@@ -200,6 +211,17 @@ function Orders() {
     const getAvailableTables = () => {
         return tables.filter(table => table.status === 'available');
     };
+
+    const [filterText, setFilterText] = useState('');
+    const [filterCategory, setFilterCategory] = useState('All');
+    const [includeUnavailable, setIncludeUnavailable] = useState(false);
+
+    const categories = ['All', ...Array.from(new Set(menu.map(m => m.category).filter(Boolean)))];
+
+    const filteredMenu = menu
+        .filter(item => (filterCategory === 'All' || item.category === filterCategory))
+        .filter(item => includeUnavailable ? true : item.available)
+        .filter(item => item.name.toLowerCase().includes(filterText.toLowerCase()) || (item.description || '').toLowerCase().includes(filterText.toLowerCase()));
 
     const isAdmin = user?.role === 'admin';
 
@@ -399,6 +421,34 @@ function Orders() {
                             <button className='close-btn' onClick={closeAddItemModal}>✕</button>
                         </div>
                         <form onSubmit={handleAddItem}>
+                            <div className='filter-row'>
+                                <div className='form-group'>
+                                    <label>Search:</label>
+                                    <input
+                                        type='text'
+                                        placeholder='Search by name or description'
+                                        value={filterText}
+                                        onChange={(e) => setFilterText(e.target.value)}
+                                    />
+                                </div>
+
+                                <div className='form-group'>
+                                    <label>Category:</label>
+                                    <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+                                        {categories.map((c) => (
+                                            <option key={c} value={c}>{c}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className='form-group checkbox'>
+                                    <label>
+                                        <input type='checkbox' checked={includeUnavailable} onChange={(e) => setIncludeUnavailable(e.target.checked)} />
+                                        &nbsp;Show unavailable
+                                    </label>
+                                </div>
+                            </div>
+
                             <div className='form-group'>
                                 <label htmlFor='item-select'>Select Item:</label>
                                 <select
@@ -408,7 +458,10 @@ function Orders() {
                                     required
                                 >
                                     <option value=''>-- Choose an item --</option>
-                                    {menu.map((item) => (
+                                    {filteredMenu.length === 0 && (
+                                        <option value='' disabled>No items match the filters</option>
+                                    )}
+                                    {filteredMenu.map((item) => (
                                         <option key={item.id} value={item.id} disabled={!item.available}>
                                             {item.name} - ${Number(item.price).toFixed(2)} {!item.available ? '(Unavailable)' : ''}
                                         </option>
