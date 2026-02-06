@@ -149,7 +149,7 @@ _Add screenshots here after deployment_
 
 ## 👨‍💻 Author
 
-Emmanuel Marzal
+Enmanuel Marzal
 
 ## 📄 License
 
