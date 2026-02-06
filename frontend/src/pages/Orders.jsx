@@ -212,14 +212,12 @@ function Orders() {
             <div className='order-content'>
                 <div className='order-header'>
                     <h1>📦 Orders Management</h1>
-                    {isAdmin && (
                         <button 
                             className='btn-primary' 
                             onClick={() => setShowCreateOrderModal(true)}
                         >
                             + Create Order
                         </button>
-                    )}
                 </div>
 
                 <div className='order-grid'>
@@ -235,7 +233,7 @@ function Orders() {
                                 <div className='order-info'>
                                     <p><strong>👥 Table:</strong> {order.tableId}</p>
                                     <p><strong>📝 Items:</strong> {order.items.length}</p>
-                                    <p><strong>💰 Total:</strong> ${order.total?.toFixed(2) || '0.00'}</p>
+                                    <p><strong>💰 Total:</strong> ${Number(order.total || 0).toFixed(2)}</p>
                                     <p className={`order-status ${order.status}`}>
                                         Status: {order.status === 'active' ? '🟢 Active' : '🔴 Closed'}
                                     </p>
@@ -326,10 +324,10 @@ function Orders() {
                                             <div key={item.menuItemId} className='item-row'>
                                                 <div className='item-details'>
                                                     <p className='item-name'>{item.name}</p>
-                                                    <p className='item-price'>${item.price?.toFixed(2)} x {item.quantity}</p>
+                                                    <p className='item-price'>${Number(item.price).toFixed(2)} x {item.quantity}</p>
                                                 </div>
                                                 <div className='item-subtotal'>
-                                                    ${item.subtotal?.toFixed(2) || (item.price * item.quantity).toFixed(2)}
+                                                    ${Number(item.subtotal || (Number(item.price) * Number(item.quantity))).toFixed(2)}
                                                 </div>
                                                 {selectedOrder.status === 'active' && (
                                                     <button
@@ -347,7 +345,7 @@ function Orders() {
                                 )}
 
                                 <div className='items-total'>
-                                    <strong>Total: ${selectedOrder.total?.toFixed(2) || '0.00'}</strong>
+                                    <strong>Total: ${Number(selectedOrder.total || 0).toFixed(2)}</strong>
                                 </div>
                             </div>
 
@@ -412,7 +410,7 @@ function Orders() {
                                     <option value=''>-- Choose an item --</option>
                                     {menu.map((item) => (
                                         <option key={item.id} value={item.id} disabled={!item.available}>
-                                            {item.name} - ${item.price?.toFixed(2)} {!item.available ? '(Unavailable)' : ''}
+                                            {item.name} - ${Number(item.price).toFixed(2)} {!item.available ? '(Unavailable)' : ''}
                                         </option>
                                     ))}
                                 </select>

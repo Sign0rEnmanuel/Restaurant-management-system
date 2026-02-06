@@ -137,7 +137,7 @@ function Menu() {
 
                                 <p className="description">{item.description}</p>
                                 <p className="category">Category: {item.category}</p>
-                                <p className="price">${item.price.toFixed(2)}</p>
+                                <p className="price">${Number(item.price).toFixed(2)}</p>
 
                                 {isAdmin && (
                                     <div className="menu-item-actions">
